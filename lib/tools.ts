@@ -478,7 +478,7 @@ export const toolCategories: ToolCategory[] = [
   },
   {
     id: "turbo-nerd",
-    name: "Turbo-nerd Shit",
+    name: "Advanced Tools",
     tools: [
       {
         id: "shavian-transliterator",

@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef, type Ref } from "react";
+import { Star, Lock } from "lucide-react";
 
-import { toolCategories, featuredTools, type Tool } from "@/lib/tools";
+import { featuredTools, type Tool, getCategoryByToolId } from "@/lib/tools";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -26,17 +27,24 @@ function BespokeIcon({
   iconRef: Ref<AnimatedIconHandle>;
   className?: string;
 }) {
-  return <Icon ref={iconRef} size={20} aria-hidden className={className} />;
+  return <Icon ref={iconRef} size={18} aria-hidden className={className} />;
 }
 
-function ToolCell({ tool, featured = false }: { tool: Tool; featured?: boolean }) {
+interface ToolCellProps {
+  tool: Tool;
+  isStarred?: boolean;
+  onToggleStar?: (id: string) => void;
+  featured?: boolean;
+}
+
+function ToolCell({ tool, isStarred = false, onToggleStar, featured = false }: ToolCellProps) {
   const handleRef = useRef<AnimatedIconHandle>(null);
   const staticRef = useRef<HTMLSpanElement>(null);
   const Animated = ANIMATED_ICONS.get(tool.icon);
   const StaticIcon = tool.icon;
+  const category = getCategoryByToolId(tool.id);
 
-  // Normalise the static lucide paths so the CSS draw-in (stroke-dasharray:1)
-  // wipes the full stroke. Bespoke (motion) icons animate themselves — skip them.
+  // Normalise static path lengths for draw-in animation if necessary
   useEffect(() => {
     if (Animated || !staticRef.current) return;
     staticRef.current
@@ -48,103 +56,162 @@ function ToolCell({ tool, featured = false }: { tool: Tool; featured?: boolean }
   const stop = () => handleRef.current?.stopAnimation();
 
   const iconClass = cn(
-    "tool-ic shrink-0 transition-transform group-hover:scale-110 group-focus-visible:scale-110",
-    featured
-      ? "text-amber-600 dark:text-amber-400"
-      : "text-muted-foreground group-hover:text-primary group-focus-visible:text-primary"
+    "tool-ic shrink-0 transition-transform duration-300 group-hover:scale-110",
+    featured ? "text-amber-500" : "text-primary"
   );
 
-  return (
-    <Link
-      href={tool.href}
-      onMouseEnter={Animated ? start : undefined}
-      onMouseLeave={Animated ? stop : undefined}
-      onFocus={Animated ? start : undefined}
-      onBlur={Animated ? stop : undefined}
-      className={cn(
-        "tool-cell group flex min-h-[62px] items-center gap-3 border-b border-r px-3.5 py-3 transition-colors focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
-        featured
-          ? "border-amber-500/30 bg-amber-500/[0.06] hover:bg-amber-500/[0.12]"
-          : "border-border hover:bg-primary/[0.09]"
-      )}
-    >
-      {Animated ? (
-        <BespokeIcon Icon={Animated} iconRef={handleRef} className={iconClass} />
-      ) : (
-        <span
-          ref={staticRef}
-          aria-hidden
-          className={cn(iconClass, "tool-ic-draw grid place-items-center")}
-        >
-          <StaticIcon className="size-5" />
-        </span>
-      )}
-      <span className="flex min-w-0 flex-col gap-0.5">
-        <span className="flex items-center gap-1.5 text-[0.78rem] font-medium leading-[1.25]">
-          {tool.name}
-          {tool.beta && (
-            <Badge
-              variant="outline"
-              className="px-1.5 py-0 text-[10px] border-amber-500/50 text-amber-600 dark:text-amber-400"
-            >
-              Beta
-            </Badge>
-          )}
-          {tool.new && (
-            <Badge variant="outline" className="px-1.5 py-0 text-[10px] border-primary/50 text-primary">
-              New
-            </Badge>
-          )}
-        </span>
-        <span className="line-clamp-2 text-[0.66rem] leading-[1.32] text-muted-foreground">
-          {tool.description}
-        </span>
-      </span>
-    </Link>
-  );
-}
+  // Map categories to screenshot display names
+  const getCategoryDisplayName = (name: string) => {
+    const n = name.toLowerCase();
+    if (n.includes("img") || n.includes("image") || n.includes("social")) return "image & assets";
+    if (n.includes("color") || n.includes("colour")) return "colour";
+    if (n.includes("typo") || n.includes("text") || n.includes("shavian")) return "text";
+    if (n.includes("calc")) return "calculators";
+    if (n.includes("other") || n.includes("barcode") || n.includes("qr") || n.includes("cipher") || n.includes("meta")) return "dev tools";
+    if (n.includes("print") || n.includes("pdf")) return "print tools";
+    return n;
+  };
 
-/** A hairline grid of tool cells. `featured` switches to the amber accent. */
-export function ToolCellGrid({ tools, featured = false }: { tools: Tool[]; featured?: boolean }) {
+  const displayName = category ? getCategoryDisplayName(category.name) : "dev tools";
+
   return (
     <div
+      onMouseEnter={Animated ? start : undefined}
+      onMouseLeave={Animated ? stop : undefined}
       className={cn(
-        "grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] border-l border-t",
-        featured ? "border-amber-500/30" : "border-border"
+        "saas-card group flex flex-col justify-between p-6 rounded-2xl border transition-all duration-300 min-h-[185px]",
+        featured
+          ? "border-amber-500/20 bg-amber-500/[0.02] dark:bg-amber-500/[0.01]"
+          : "border-border/60"
       )}
     >
+      <div className="space-y-4">
+        {/* Top Circular Badge Icon */}
+        <div className={cn(
+          "flex size-10 items-center justify-center rounded-full transition-all duration-300 border",
+          featured
+            ? "bg-amber-500/10 border-amber-500/20 text-amber-500"
+            : "bg-primary/5 border-primary/10 text-primary"
+        )}>
+          {Animated ? (
+            <BespokeIcon Icon={Animated} iconRef={handleRef} className="size-4.5" />
+          ) : (
+            <span
+              ref={staticRef}
+              aria-hidden
+              className={cn(iconClass, "tool-ic-draw grid place-items-center")}
+            >
+              <StaticIcon className="size-4.5" />
+            </span>
+          )}
+        </div>
+
+        {/* Text Area */}
+        <div className="space-y-1">
+          <h4 className="text-[0.9rem] font-bold tracking-tight text-foreground flex items-center gap-1.5 flex-wrap">
+            {tool.name}
+            {tool.beta && (
+              <Badge
+                variant="outline"
+                className="px-1 py-0 text-[8px] font-medium border-amber-500/50 text-amber-600 dark:text-amber-400 font-sans"
+              >
+                Beta
+              </Badge>
+            )}
+            {tool.new && (
+              <Badge variant="outline" className="px-1 py-0 text-[8px] font-medium border-primary/50 text-primary font-sans">
+                New
+              </Badge>
+            )}
+          </h4>
+          <p className="text-[0.75rem] text-muted-foreground line-clamp-2 leading-relaxed font-sans font-normal">
+            {tool.description}
+          </p>
+        </div>
+      </div>
+
+      {/* Footer Controls */}
+      <div className="flex items-center justify-between border-t border-border/20 pt-3 mt-4 text-[11px] font-sans">
+        {/* Left Category Label */}
+        <span className="text-muted-foreground/60 font-semibold tracking-tight uppercase text-[9px]">
+          {displayName}
+        </span>
+
+        {/* Right Actions */}
+        <div className="flex items-center gap-2">
+          {/* Star Button */}
+          <button
+            type="button"
+            onClick={() => onToggleStar && onToggleStar(tool.id)}
+            className={cn(
+              "flex size-7 items-center justify-center rounded-full border border-border/40 hover:bg-muted/30 transition-all",
+              isStarred ? "text-amber-500 border-amber-500/40 bg-amber-500/[0.04]" : "text-muted-foreground"
+            )}
+            title={isStarred ? "Remove from favourites" : "Add to favourites"}
+          >
+            <Star className={cn("size-3.5", isStarred && "fill-amber-500")} />
+          </button>
+
+          {/* Pricing Tag */}
+          <span className="px-2.5 py-0.5 rounded-full border border-dashed border-border/60 text-[10px] text-muted-foreground select-none">
+            $1
+          </span>
+
+          {/* Run Link Button */}
+          <Link
+            href={tool.href}
+            className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-sm group-hover:scale-[1.02]"
+          >
+            <Lock className="size-3 text-background" />
+            <span>run</span>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** A modern SaaS grid of tool cells with rounded corners and gaps. */
+export function ToolCellGrid({
+  tools,
+  starredTools = new Set(),
+  onToggleStar,
+  featured = false,
+}: {
+  tools: Tool[];
+  starredTools?: Set<string>;
+  onToggleStar?: (id: string) => void;
+  featured?: boolean;
+}) {
+  return (
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4 md:gap-6">
       {tools.map((tool) => (
-        <ToolCell key={tool.id} tool={tool} featured={featured} />
+        <ToolCell
+          key={tool.id}
+          tool={tool}
+          isStarred={starredTools.has(tool.id)}
+          onToggleStar={onToggleStar}
+          featured={featured}
+        />
       ))}
     </div>
   );
 }
 
-/**
- * Greatest-hits row. Imports featuredTools itself (rather than receiving them
- * as props) so the icon *functions* never cross the server→client boundary.
- */
-export function FeaturedGrid() {
-  return <ToolCellGrid tools={featuredTools} featured />;
-}
-
-export function ToolGrid() {
+/** Greatest-hits row. */
+export function FeaturedGrid({
+  starredTools = new Set(),
+  onToggleStar,
+}: {
+  starredTools?: Set<string>;
+  onToggleStar?: (id: string) => void;
+}) {
   return (
-    <div className="space-y-12">
-      {toolCategories.map((category) => (
-        <section key={category.id}>
-          <div className="flex items-baseline gap-2.5 pb-2.5">
-            <h3 className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-foreground">
-              {category.name}
-            </h3>
-            <span className="text-[0.6rem] tabular-nums text-muted-foreground">
-              {category.tools.length}
-            </span>
-            <span className="h-px flex-1 bg-border" />
-          </div>
-          <ToolCellGrid tools={category.tools} />
-        </section>
-      ))}
-    </div>
+    <ToolCellGrid
+      tools={featuredTools}
+      starredTools={starredTools}
+      onToggleStar={onToggleStar}
+      featured
+    />
   );
 }

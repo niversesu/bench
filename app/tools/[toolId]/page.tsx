@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
-import { Construction } from "lucide-react";
+import Link from "next/link";
+import { Construction, ArrowLeft } from "lucide-react";
 import { getToolById, getCategoryByToolId, allTools } from "@/lib/tools";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PeelSticker } from "@/components/sticker-wall";
 
 // Dynamic imports for tool components
 const toolComponents: Record<string, React.ComponentType> = {
@@ -86,7 +86,7 @@ export async function generateMetadata({ params }: ToolPageProps) {
   }
 
   return {
-    title: `${tool.name} - delphitools`,
+    title: `${tool.name} - bench.`,
     description: tool.description,
   };
 }
@@ -104,39 +104,58 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const ToolComponent = toolComponents[toolId];
 
   return (
-    <div className="p-6 md:p-8 lg:p-10">
-      <div className="max-w-4xl mx-auto">
+    <div className="p-4 md:p-8 lg:p-12 font-sans max-w-5xl mx-auto space-y-6">
+      {/* Navigation Back Link */}
+      <div>
+        <Link 
+          href="/" 
+          className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
+        >
+          <ArrowLeft className="size-3.5" />
+          <span>back to tools</span>
+        </Link>
+      </div>
+
+      <div className="space-y-8">
         {/* Tool Header */}
-        <div className="mb-8">
-          <div className="flex items-start gap-4 mb-4">
-            <div className="flex size-14 items-center justify-center rounded-xl bg-primary/10">
-              <Icon className="size-7 text-primary" />
+        <div className="border-b border-border/20 pb-6">
+          <div className="flex items-start gap-4">
+            <div className="flex size-12 items-center justify-center rounded-full bg-primary/5 text-primary border border-primary/10 shadow-sm shrink-0">
+              <Icon className="size-6 text-primary" />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 space-y-1">
               <div className="flex items-center gap-3 flex-wrap">
-                <h1 className="text-2xl font-bold tracking-tight">{tool.name}</h1>
+                <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground">{tool.name}</h1>
                 {category && (
-                  <Badge variant="secondary">{category.name}</Badge>
+                  <Badge variant="secondary" className="bg-muted text-muted-foreground border-none text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold">
+                    {category.name}
+                  </Badge>
                 )}
                 {tool.beta && (
-                  <Badge variant="outline" className="border-amber-500/50 text-amber-600 dark:text-amber-400">Beta</Badge>
+                  <Badge variant="outline" className="border-amber-500/50 text-amber-600 dark:text-amber-400 text-[9px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider">
+                    Beta
+                  </Badge>
                 )}
                 {tool.new && (
-                  <Badge variant="outline" className="border-primary/50 text-primary">New</Badge>
+                  <Badge variant="outline" className="border-primary/50 text-primary text-[9px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider">
+                    New
+                  </Badge>
                 )}
               </div>
-              <p className="text-muted-foreground mt-1">{tool.description}</p>
+              <p className="text-muted-foreground text-xs md:text-sm">{tool.description}</p>
             </div>
           </div>
         </div>
 
-        {/* Tool Content */}
+        {/* Tool Content Wrapper */}
         {ToolComponent ? (
-          <ToolComponent />
+          <div className="bg-card/20 border border-border/45 rounded-2xl p-5 md:p-8 backdrop-blur-sm shadow-sm">
+            <ToolComponent />
+          </div>
         ) : (
           <>
             {/* Placeholder Content */}
-            <Card className="border-dashed">
+            <Card className="border-dashed saas-card">
               <CardHeader className="text-center pb-4">
                 <div className="flex justify-center mb-4">
                   <div className="flex size-16 items-center justify-center rounded-full bg-muted">
@@ -166,39 +185,27 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
             {/* Feature Preview */}
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              <div className="p-4 rounded-lg border bg-card">
-                <h3 className="font-medium mb-1">Browser-based</h3>
-                <p className="text-sm text-muted-foreground">
+              <div className="p-4 rounded-xl border bg-card/50 saas-card">
+                <h3 className="font-semibold text-sm mb-1 text-foreground">Browser-based</h3>
+                <p className="text-xs text-muted-foreground">
                   All processing happens locally in your browser
                 </p>
               </div>
-              <div className="p-4 rounded-lg border bg-card">
-                <h3 className="font-medium mb-1">No uploads</h3>
-                <p className="text-sm text-muted-foreground">
+              <div className="p-4 rounded-xl border bg-card/50 saas-card">
+                <h3 className="font-semibold text-sm mb-1 text-foreground">No uploads</h3>
+                <p className="text-xs text-muted-foreground">
                   Your files never leave your computer
                 </p>
               </div>
-              <div className="p-4 rounded-lg border bg-card">
-                <h3 className="font-medium mb-1">Free forever</h3>
-                <p className="text-sm text-muted-foreground">
+              <div className="p-4 rounded-xl border bg-card/50 saas-card">
+                <h3 className="font-semibold text-sm mb-1 text-foreground">Free forever</h3>
+                <p className="text-xs text-muted-foreground">
                   No subscriptions, no hidden costs
                 </p>
               </div>
             </div>
           </>
         )}
-
-        {/* "...and all I got was this lousy sticker." One under every tool,
-            sitting well below the content. Peel it off to download. */}
-        <div className="mt-24 flex flex-col items-center gap-3 md:mt-32">
-          <PeelSticker
-            tool={toolId}
-            label={`${tool.name} — and all I got was this lousy sticker`}
-          />
-          <p className="text-sm text-muted-foreground">
-            Have a sticker! Peel it off to download.
-          </p>
-        </div>
       </div>
     </div>
   );

@@ -1,20 +1,18 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { AppHeader } from "@/components/app-header";
 import { ColourNotationProvider } from "@/components/colour-notation-provider";
+import { Navbar } from "@/components/navbar";
 import SkipLink from "@/components/ui/skip-link";
 
 export const metadata: Metadata = {
-  title: "delphitools",
+  title: "bench. - small tools, sorted.",
   description:
-    "A collection of small, low stakes and low effort tools. No logins, no registration, no data collection.",
+    "A clean, professional collection of developer and designer utilities. Everything runs locally in your browser.",
   icons: {
-    icon: "/delphi-lowlod.png",
-    shortcut: "/delphi-lowlod.png",
-    apple: "/delphi-lowlod.png",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
 };
 
@@ -32,22 +30,17 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-mono antialiased">
+      <body className="font-sans antialiased bg-background text-foreground min-h-screen flex flex-col">
         <ColourNotationProvider>
-          <SidebarProvider>
-            <SkipLink />
-            <AppSidebar />
-            <SidebarInset>
-              <AppHeader />
-              <main
-                className="flex-1 overflow-auto"
-                id="main-content"
-                tabIndex={-1}
-              >
-                {children}
-              </main>
-            </SidebarInset>
-          </SidebarProvider>
+          <SkipLink />
+          <Navbar />
+          <main
+            className="flex-1 overflow-auto w-full focus:outline-none"
+            id="main-content"
+            tabIndex={-1}
+          >
+            {children}
+          </main>
         </ColourNotationProvider>
       </body>
     </html>

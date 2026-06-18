@@ -50,3 +50,22 @@ DESIGN.md
 
 # build data (downloaded source files for dictionary builds)
 scripts/data/
+
+# devenv (nix-based dev environment)
+.devenv/
+
+# editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# build output
+/dist
+
+# cache
+.cache/
+
+# lockfiles (use bun.lock if using bun, package-lock.json already ignored)
+bun.lock
