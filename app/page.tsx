@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 import { allTools, getCategoryByToolId } from "@/lib/tools";
 import { ToolCellGrid } from "@/components/tool-grid";
 import { LinkHubGrid } from "@/components/link-hub";
-import { hubLinks } from "@/lib/links";
+import { hubLinks, linkFilterTags } from "@/lib/links";
 
 function loadStarredTools(): Set<string> {
   try {
@@ -22,6 +22,7 @@ export default function Home() {
   const [selectedTag, setSelectedTag] = useState("all");
   const [starredTools, setStarredTools] = useState<Set<string>>(loadStarredTools);
   const [view, setView] = useState<"tools" | "links">("tools");
+  const [selectedLinkTag, setSelectedLinkTag] = useState("all");
   const isLoaded = true;
 
   const handleToggleStar = (id: string) => {
@@ -69,6 +70,10 @@ export default function Home() {
     return getToolTagName(tool.id) === selectedTag;
   });
 
+  const filteredLinks = selectedLinkTag === "all"
+    ? hubLinks
+    : hubLinks.filter((l) => l.tags.includes(selectedLinkTag));
+
   const filterTags = [
     { id: "all", label: "all tools" },
     { id: "image & assets", label: "image & assets" },
@@ -113,24 +118,24 @@ export default function Home() {
         <div className="flex flex-wrap items-center gap-2 pb-1 overflow-x-auto border-b border-border/20">
           <div className="flex rounded-lg border border-border/60 overflow-hidden text-xs font-semibold mr-1">
             <button
-              onClick={() => setView("tools")}
+              onClick={() => { setView("tools"); setSelectedTag("all"); }}
               className={`px-3 py-1.5 transition-all ${view === "tools" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
             >
               tools
             </button>
             <button
-              onClick={() => setView("links")}
+              onClick={() => { setView("links"); setSelectedLinkTag("all"); }}
               className={`px-3 py-1.5 border-l border-border/60 transition-all ${view === "links" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
             >
               links
             </button>
           </div>
-          {filterTags.map((tag) => (
+          {(view === "links" ? linkFilterTags : filterTags).map((tag) => (
             <button
               key={tag.id}
-              onClick={() => setSelectedTag(tag.id)}
+              onClick={() => view === "links" ? setSelectedLinkTag(tag.id) : setSelectedTag(tag.id)}
               className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide border transition-all duration-200 ${
-                selectedTag === tag.id
+                (view === "links" ? selectedLinkTag : selectedTag) === tag.id
                   ? "bg-foreground text-background border-foreground"
                   : "bg-card/30 hover:bg-card border-border/50 text-muted-foreground hover:text-foreground"
               }`}
@@ -147,11 +152,11 @@ export default function Home() {
         <div className="text-xs text-muted-foreground font-mono">
           {view === "tools"
             ? `${filteredTools.length} ${filteredTools.length === 1 ? "tool" : "tools"}`
-            : `${hubLinks.length} links`}
+            : `${filteredLinks.length} ${filteredLinks.length === 1 ? "link" : "links"}`}
         </div>
 
         {view === "links" ? (
-          <LinkHubGrid links={hubLinks} />
+          <LinkHubGrid links={filteredLinks} />
         ) : isLoaded ? (
           filteredTools.length > 0 ? (
             <ToolCellGrid 
