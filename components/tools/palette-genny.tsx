@@ -130,7 +130,7 @@ export function PaletteGennyTool() {
   const [strategy, setStrategy] = useState<PaletteStrategy>("random-cohesive");
   const [strategyOpen, setStrategyOpen] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
-  const [loadedFromUrl, setLoadedFromUrl] = useState(false);
+  const [_loadedFromUrl, setLoadedFromUrl] = useState(false);
   const hasInitializedFromUrl = useRef(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -148,6 +148,7 @@ export function PaletteGennyTool() {
     if (hasInitializedFromUrl.current) return;
     const urlColors = parseColorsFromParam(getColorsFromUrl());
     if (urlColors) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setColours(urlColors.map(hex => ({
         id: generateId(),
         hex,
@@ -216,9 +217,9 @@ export function PaletteGennyTool() {
     const lastColour = colours[colours.length - 1];
     const rgb = hexToRgb(lastColour.hex);
     if (rgb) {
-      const [L, c, h] = rgbToOklch(...rgb);
-      const newH = (h + 20 + Math.random() * 20) % 360;
-      const newL = Math.max(0.3, Math.min(0.8, L + (Math.random() - 0.5) * 0.2));
+      const [L, _c, h] = rgbToOklch(...rgb);
+      const _newH = (h + 20 + Math.random() * 20) % 360;
+      const _newL = Math.max(0.3, Math.min(0.8, L + (Math.random() - 0.5) * 0.2));
       // Generate using the imported utilities from palette-strategies would be cleaner
       // but we can also just create a random variant here
       const newHexes = generatePalette(1, strategy);
@@ -610,6 +611,7 @@ export function PaletteGennyTool() {
             <button
               type="button"
               role="combobox"
+              aria-controls="strategy-listbox"
               aria-expanded={strategyOpen}
               aria-label="Choose palette strategy"
               className="flex min-w-0 flex-1 items-center gap-3 border-r border-border px-4 py-2 text-left transition-colors hover:bg-muted/50"
@@ -625,7 +627,7 @@ export function PaletteGennyTool() {
               <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
             </button>
           </PopoverTrigger>
-          <PopoverContent align="start" className="w-[min(24rem,90vw)] p-0">
+          <PopoverContent id="strategy-listbox" align="start" className="w-[min(24rem,90vw)] p-0">
             <Command>
               <CommandInput placeholder="Search strategies…" />
               <CommandList>

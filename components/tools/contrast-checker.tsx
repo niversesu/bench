@@ -163,9 +163,11 @@ export function ContrastCheckerTool() {
 
   useEffect(() => {
     const r = getContrastRatio(foreground, background);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRatio(r);
     if (r) {
       setCompliance(checkCompliance(r));
+     
     }
   }, [foreground, background]);
 

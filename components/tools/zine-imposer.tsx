@@ -154,6 +154,7 @@ export function ZineImposerTool() {
   }, [pageCount]);
 
   // Generate unique ID
+  // eslint-disable-next-line react-hooks/purity
   const generateId = () => Math.random().toString(36).substring(2, 9);
 
   // Load image and get dimensions
@@ -555,6 +556,7 @@ export function ZineImposerTool() {
 
   // Regenerate previews when images or settings change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     generatePreview();
   }, [generatePreview]);
 
@@ -954,6 +956,7 @@ export function ZineImposerTool() {
 
               {image ? (
                 <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={image.dataUrl}
                     alt={`Page ${index + 1}`}
@@ -1042,6 +1045,7 @@ export function ZineImposerTool() {
                       {side.side}
                     </span>
                   )}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={previews[i]}
                     alt={`Zine imposition preview ${side.side}`}

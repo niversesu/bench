@@ -68,6 +68,7 @@ export function EncoderTool() {
   }, [base64Input, base64Mode]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     processBase64();
   }, [processBase64]);
 
@@ -90,6 +91,7 @@ export function EncoderTool() {
   }, [urlInput, urlMode]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     processUrl();
   }, [processUrl]);
 

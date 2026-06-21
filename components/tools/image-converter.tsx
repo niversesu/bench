@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { Upload, Download, X, ImageIcon, Link as LinkIcon, Lock, Unlock, Archive, Scaling } from "lucide-react";
@@ -147,7 +148,6 @@ function getTargetDimensions(
   return { width: img.naturalWidth, height: img.naturalHeight };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function encodePng(canvas: HTMLCanvasElement, _options: PngOptions): Promise<Blob> {
   return canvasToBlob(canvas, "image/png");
 }
@@ -240,7 +240,6 @@ async function encodeBmp(canvas: HTMLCanvasElement, options: BmpOptions): Promis
   return new Blob([buffer], { type: "image/bmp" });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function encodeTiff(canvas: HTMLCanvasElement, _options: TiffOptions): Promise<Blob> {
   const UTIF = await import("utif");
   const ctx = canvas.getContext("2d")!;
@@ -403,6 +402,7 @@ export function ImageConverterTool() {
     canvas.width = 1;
     canvas.height = 1;
     const result = canvas.toDataURL("image/avif").startsWith("data:image/avif");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAvifSupported(result);
   }, []);
 

@@ -1,28 +1,25 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Search, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Search } from "lucide-react";
 import { allTools, getCategoryByToolId } from "@/lib/tools";
 import { ToolCellGrid } from "@/components/tool-grid";
+
+function loadStarredTools(): Set<string> {
+  try {
+    const stored = localStorage.getItem("bench_starred_tools");
+    if (stored) return new Set(JSON.parse(stored));
+  } catch (e) {
+    console.error("Failed to load favourites:", e);
+  }
+  return new Set();
+}
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState("all");
-  const [starredTools, setStarredTools] = useState<Set<string>>(new Set());
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Load starred tools from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("bench_starred_tools");
-      if (stored) {
-        setStarredTools(new Set(JSON.parse(stored)));
-      }
-    } catch (e) {
-      console.error("Failed to load favourites:", e);
-    }
-    setIsLoaded(true);
-  }, []);
+  const [starredTools, setStarredTools] = useState<Set<string>>(loadStarredTools);
+  const isLoaded = true;
 
   const handleToggleStar = (id: string) => {
     setStarredTools((prev) => {

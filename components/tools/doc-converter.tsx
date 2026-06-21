@@ -209,6 +209,7 @@ export function DocConverterTool() {
 
   // Reflect engine state if it was already loaded earlier this session.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEngineState(getEngineState());
   }, []);
 

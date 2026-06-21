@@ -353,6 +353,7 @@ export function GraphCalcTool() {
 
   // Use a ref to always have current bounds in the native wheel listener
   const boundsRef = useRef({ xMin, xMax, yMin, yMax });
+  // eslint-disable-next-line react-hooks/refs
   boundsRef.current = { xMin, xMax, yMin, yMax };
 
   // Attach a native (non-passive) wheel listener so preventDefault() works

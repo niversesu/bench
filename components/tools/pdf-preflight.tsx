@@ -979,6 +979,7 @@ export function PdfPreflightTool() {
 
   useEffect(() => {
     if (!file) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setReport(null);
       setPdfDoc(null);
       return;

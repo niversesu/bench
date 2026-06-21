@@ -254,6 +254,7 @@ export function ColourConverterTool() {
 
   useEffect(() => {
     const result = parseAndConvert(inputFormat, inputValue);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setColours(result);
   }, [inputFormat, inputValue]);
 

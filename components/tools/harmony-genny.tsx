@@ -150,7 +150,7 @@ function generateHarmony(baseHex: string, type: HarmonyType): ColourSwatch[] | n
   if (type === "monochromatic") {
     // Generate 5 shades with same hue
     const lightnesses = [0.85, 0.70, L, 0.40, 0.25];
-    return lightnesses.map((newL, i) => {
+    return lightnesses.map((newL, _i) => {
       const newRgb = oklchToRgb(newL, c * (newL > 0.7 ? 0.5 : 1), h);
       const clampedRgb: [number, number, number] = [
         Math.round(Math.max(0, Math.min(255, newRgb[0]))),
@@ -192,6 +192,7 @@ export function HarmonyGennyTool() {
 
   useEffect(() => {
     const result = generateHarmony(baseColour, harmonyType);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setColours(result);
   }, [baseColour, harmonyType]);
 

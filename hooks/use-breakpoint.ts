@@ -34,6 +34,7 @@ export function useIsTouchDevice(): boolean {
   const [isTouch, setIsTouch] = React.useState(false);
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsTouch("ontouchstart" in window || navigator.maxTouchPoints > 0);
   }, []);
 

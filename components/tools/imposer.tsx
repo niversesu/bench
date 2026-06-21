@@ -22,7 +22,6 @@ import {
   Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -186,18 +185,21 @@ export function ImposerTool() {
       layoutId === "perfect-bind" ||
       layoutId === "step-and-repeat"
     ) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOrientation("landscape");
     }
   }, [layoutId]);
 
   // Reset active sheet when result changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveSheet(0);
     setIsFlipped(false);
   }, [layoutId, paperSizeId, orientation, marginMm, gutterMm, creepMm, pdfPageCount]);
 
   // Default blank mode based on PDF presence
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setBlankMode(!pdfBytes);
   }, [pdfBytes]);
 

@@ -5,6 +5,7 @@ export function useFilePaste(
   accept?: string
 ) {
   const handlerRef = useRef(handler)
+  // eslint-disable-next-line react-hooks/refs
   handlerRef.current = handler
 
   useEffect(() => {

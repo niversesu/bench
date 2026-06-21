@@ -45,6 +45,7 @@ export function PaperSizesTool() {
 
   useEffect(() => {
     if (uploadedDimensions) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSearchQuery(`${uploadedDimensions.width}x${uploadedDimensions.height}@${uploadDpi}dpi`);
     }
   }, [uploadDpi, uploadedDimensions]);

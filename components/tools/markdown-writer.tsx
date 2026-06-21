@@ -79,6 +79,7 @@ export function MarkdownWriterTool() {
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setContent(saved);
     }
   }, []);
@@ -208,7 +209,7 @@ export function MarkdownWriterTool() {
           }
         }
       });
-    } catch (e) {
+    } catch (_e) {
       alert("Invalid regex pattern");
     }
   };

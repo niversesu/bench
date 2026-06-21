@@ -56,6 +56,7 @@ export function ShavianTransliteratorTool() {
   const [activePopover, setActivePopover] = useState<{ tokenIdx: number; phonemeIdx: number } | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef(input);
+  // eslint-disable-next-line react-hooks/refs
   inputRef.current = input;
 
   // Inject font face

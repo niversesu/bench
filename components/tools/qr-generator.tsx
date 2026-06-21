@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
@@ -283,6 +284,7 @@ export function QrGeneratorTool() {
   // URL validation
   useEffect(() => {
     if (!content.trim()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUrlValidation({ checking: false, valid: null, message: "" });
       return;
     }

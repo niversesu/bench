@@ -207,12 +207,14 @@ function TailwindShadesInner() {
   // Update baseColour when URL parameter changes
   useEffect(() => {
     if (colorFromUrl) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBaseColour(colorFromUrl);
     }
   }, [colorFromUrl]);
 
   useEffect(() => {
     const result = generateShades(baseColour, mode);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setShades(result);
   }, [baseColour, mode]);
 

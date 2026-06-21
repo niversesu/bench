@@ -65,6 +65,7 @@ function TextPane({ label, value, onChange, wrap, isRight }: TextPaneProps) {
 
   useEffect(() => {
     if (!wrap) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLineHeights([]);
       return;
     }
