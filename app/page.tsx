@@ -21,6 +21,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState("all");
   const [starredTools, setStarredTools] = useState<Set<string>>(loadStarredTools);
+  const [view, setView] = useState<"tools" | "links">("tools");
   const isLoaded = true;
 
   const handleToggleStar = (id: string) => {
@@ -94,14 +95,6 @@ export default function Home() {
 
 
 
-      {/* Link Hub */}
-      <section className="space-y-4">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">
-          links
-        </h2>
-        <LinkHubGrid links={hubLinks} />
-      </section>
-
       {/* Control Console (Search & Tags) */}
       <section className="space-y-6">
         {/* Search Box */}
@@ -116,8 +109,22 @@ export default function Home() {
           />
         </div>
 
-        {/* Filter Tags Row */}
-        <div className="flex flex-wrap gap-2 pb-1 overflow-x-auto border-b border-border/20">
+        {/* View Toggle + Filter Tags Row */}
+        <div className="flex flex-wrap items-center gap-2 pb-1 overflow-x-auto border-b border-border/20">
+          <div className="flex rounded-lg border border-border/60 overflow-hidden text-xs font-semibold mr-1">
+            <button
+              onClick={() => setView("tools")}
+              className={`px-3 py-1.5 transition-all ${view === "tools" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              tools
+            </button>
+            <button
+              onClick={() => setView("links")}
+              className={`px-3 py-1.5 border-l border-border/60 transition-all ${view === "links" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              links
+            </button>
+          </div>
           {filterTags.map((tag) => (
             <button
               key={tag.id}
@@ -134,14 +141,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Main Flat Tools Grid */}
+      {/* Main Grid */}
       <main className="space-y-6">
         {/* Counter */}
         <div className="text-xs text-muted-foreground font-mono">
-          {filteredTools.length} {filteredTools.length === 1 ? "tool" : "tools"}
+          {view === "tools"
+            ? `${filteredTools.length} ${filteredTools.length === 1 ? "tool" : "tools"}`
+            : `${hubLinks.length} links`}
         </div>
 
-        {isLoaded ? (
+        {view === "links" ? (
+          <LinkHubGrid links={hubLinks} />
+        ) : isLoaded ? (
           filteredTools.length > 0 ? (
             <ToolCellGrid 
               tools={filteredTools} 
