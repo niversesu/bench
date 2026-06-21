@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { allTools, getCategoryByToolId } from "@/lib/tools";
 import { ToolCellGrid } from "@/components/tool-grid";
+import { LinkHubGrid } from "@/components/link-hub";
+import { hubLinks } from "@/lib/links";
 
 function loadStarredTools(): Set<string> {
   try {
@@ -88,6 +90,16 @@ export default function Home() {
           ten-second jobs that don&apos;t deserve a subscription. buy a single tool for $1, 
           subscribe for everything at $5/month, or watch five short ads for thirty minutes free.
         </p>
+      </section>
+
+
+
+      {/* Link Hub */}
+      <section className="space-y-4">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">
+          links
+        </h2>
+        <LinkHubGrid links={hubLinks} />
       </section>
 
       {/* Control Console (Search & Tags) */}
