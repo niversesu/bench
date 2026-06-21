@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, type Ref } from "react";
-import { Star, Lock } from "lucide-react";
+import { Star } from "lucide-react";
 
 import { featuredTools, type Tool, getCategoryByToolId } from "@/lib/tools";
 import { cn } from "@/lib/utils";
@@ -75,11 +75,12 @@ function ToolCell({ tool, isStarred = false, onToggleStar, featured = false }: T
   const displayName = category ? getCategoryDisplayName(category.name) : "dev tools";
 
   return (
-    <div
+    <Link
+      href={tool.href}
       onMouseEnter={Animated ? start : undefined}
       onMouseLeave={Animated ? stop : undefined}
       className={cn(
-        "saas-card group flex flex-col justify-between p-6 rounded-2xl border transition-all duration-300 min-h-[185px]",
+        "saas-card group flex flex-col justify-between p-6 rounded-2xl border transition-all duration-300 min-h-[185px] cursor-pointer hover:border-border",
         featured
           ? "border-amber-500/20 bg-amber-500/[0.02] dark:bg-amber-500/[0.01]"
           : "border-border/60"
@@ -142,7 +143,7 @@ function ToolCell({ tool, isStarred = false, onToggleStar, featured = false }: T
           {/* Star Button */}
           <button
             type="button"
-            onClick={() => onToggleStar && onToggleStar(tool.id)}
+            onClick={(e) => { e.preventDefault(); if (onToggleStar) onToggleStar(tool.id); }}
             className={cn(
               "flex size-7 items-center justify-center rounded-full border border-border/40 hover:bg-muted/30 transition-all",
               isStarred ? "text-amber-500 border-amber-500/40 bg-amber-500/[0.04]" : "text-muted-foreground"
@@ -157,17 +158,9 @@ function ToolCell({ tool, isStarred = false, onToggleStar, featured = false }: T
             $1
           </span>
 
-          {/* Run Link Button */}
-          <Link
-            href={tool.href}
-            className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-sm group-hover:scale-[1.02]"
-          >
-            <Lock className="size-3 text-background" />
-            <span>run</span>
-          </Link>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
