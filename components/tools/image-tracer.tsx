@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import {
@@ -607,7 +608,6 @@ export function ImageTracerTool() {
       .replace(/(<svg[^>]*)\sheight="[^"]*"/, '$1 height="auto"');
     return result;
   };
-
   // Convert SVG string to a blob URL for <img> rendering (avoids DOM thrashing)
   const svgToBlobUrl = (svg: string): string => {
     const blob = new Blob([svg], { type: "image/svg+xml" });
@@ -865,6 +865,7 @@ export function ImageTracerTool() {
             </span>
             {hasResult && !tracing && (
               <span className="text-xs text-muted-foreground shrink-0">
+                {/* eslint-disable-next-line react-hooks/refs */}
                 · SVG {formatSize(new Blob([rawSvgRef.current || ""]).size)}
               </span>
             )}
@@ -995,6 +996,7 @@ export function ImageTracerTool() {
           </PopoverContent>
         </Popover>
 
+        {/* eslint-disable-next-line react-hooks/refs */}
         {imageDataRef.current && (
           <Button
             onClick={handleRetrace}

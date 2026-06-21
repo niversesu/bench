@@ -265,6 +265,7 @@ export function ScrollGeneratorTool() {
                 <label className="font-bold block">Slice Preview</label>
               </div>
               <div className="relative overflow-hidden border-t border-border">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={sourceImage}
                   alt="Source"
@@ -422,6 +423,7 @@ export function ScrollGeneratorTool() {
                 onClick={() => downloadTile(tile)}
                 className="flex-shrink-0 group relative bg-card"
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={tile.dataUrl}
                   alt={`Slide ${tile.index + 1}`}

@@ -47,6 +47,7 @@ export function DownloadCard() {
             <span className="sr-only"> (opens in new tab)</span>
           </a>
         </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/delphi-boxes.png"
           alt=""
@@ -91,6 +92,7 @@ export function DownloadCard() {
             <span className="sr-only"> (opens in new tab)</span>
           </a>
         </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/delphi-cli.png"
           alt=""

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Upload, Download, Trash2, ImageIcon, Layers, Square, Blend, RotateCw } from "lucide-react";

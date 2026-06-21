@@ -288,6 +288,7 @@ export function ImageClipperTool() {
                   backgroundPosition: "0 0, 0 8px, 8px -8px, -8px 0px",
                 }}
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={preview}
                   alt="Clipped result"

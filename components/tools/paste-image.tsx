@@ -381,6 +381,7 @@ export function PasteImageTool() {
                 ref={containerRef}
                 className="relative inline-block touch-none select-none"
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   ref={imageRef}
                   src={image}

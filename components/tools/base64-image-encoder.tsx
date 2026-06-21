@@ -167,6 +167,7 @@ export function Base64ImageEncoderTool() {
                 <div key={img.id} className="border-b-2 border-border last:border-b-0">
                   <div className="flex items-stretch border-b border-border">
                     <div className="size-16 shrink-0 bg-muted flex items-center justify-center overflow-hidden border-r border-border">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={img.previewUrl}
                         alt={img.name}
