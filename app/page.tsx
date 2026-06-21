@@ -70,9 +70,14 @@ export default function Home() {
     return getToolTagName(tool.id) === selectedTag;
   });
 
-  const filteredLinks = selectedLinkTag === "all"
-    ? hubLinks
-    : hubLinks.filter((l) => l.tags.includes(selectedLinkTag));
+  const filteredLinks = hubLinks.filter((l) => {
+    const matchesSearch = !query
+      || l.name.toLowerCase().includes(query)
+      || l.description.toLowerCase().includes(query)
+      || l.tags.some((t) => t.includes(query));
+    const matchesTag = selectedLinkTag === "all" || l.tags.includes(selectedLinkTag);
+    return matchesSearch && matchesTag;
+  });
 
   const filterTags = [
     { id: "all", label: "all tools" },
