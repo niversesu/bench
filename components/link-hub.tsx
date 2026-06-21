@@ -1,6 +1,7 @@
 "use client";
 
 import { ExternalLink } from "lucide-react";
+import { DescriptionExpander } from "@/components/description-expander";
 import { cn } from "@/lib/utils";
 import { type HubLink } from "@/lib/links";
 
@@ -24,9 +25,7 @@ function LinkCard({ link }: { link: HubLink }) {
             {link.name}
             <ExternalLink className="size-3 text-muted-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity" />
           </h4>
-          <p className="text-[0.75rem] text-muted-foreground line-clamp-2 leading-relaxed font-sans font-normal">
-            {link.description}
-          </p>
+          <DescriptionExpander description={link.description} title={link.name} />
         </div>
       </div>
 

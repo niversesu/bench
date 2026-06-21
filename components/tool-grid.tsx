@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, type Ref } from "react";
 import { Star } from "lucide-react";
+import { DescriptionExpander } from "@/components/description-expander";
 
 import { featuredTools, type Tool, getCategoryByToolId } from "@/lib/tools";
 import { cn } from "@/lib/utils";
@@ -125,9 +126,7 @@ function ToolCell({ tool, isStarred = false, onToggleStar, featured = false }: T
               </Badge>
             )}
           </h4>
-          <p className="text-[0.75rem] text-muted-foreground line-clamp-2 leading-relaxed font-sans font-normal">
-            {tool.description}
-          </p>
+          <DescriptionExpander description={tool.description} title={tool.name} />
         </div>
       </div>
 
