@@ -3,7 +3,7 @@
 	Simple raster image tracer and vectorizer written in JavaScript.
 	andras@jankovics.net
 */
-
+/* eslint-disable @typescript-eslint/no-this-alias, no-unused-expressions */
 /*
 
 The Unlicense / PUBLIC DOMAIN

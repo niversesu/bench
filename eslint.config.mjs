@@ -12,9 +12,21 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Vendored third-party code (MIT pandoc-wasm wrapper) — not ours to lint.
+    // Vendored third-party code — not ours to lint.
     "lib/pandoc/pandoc-core.js",
+    "public/lib/imagetracer_v1.2.6.js",
+    "public/pdf.worker.min.mjs",
   ]),
+  {
+    rules: {
+      // Allow _ prefix for intentionally unused variables
+      "@typescript-eslint/no-unused-vars": ["warn", {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }],
+    },
+  },
 ]);
 
 export default eslintConfig;
