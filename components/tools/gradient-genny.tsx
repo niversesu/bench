@@ -515,7 +515,7 @@ function DraggableMeshDot({
 // Sortable colour stop item for linear gradient
 function SortableColourStop({
   stop,
-  index,
+  _index,
   onUpdate,
   onRemove,
   canRemove,

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Lock, Sun, Moon } from "lucide-react";
+import { Lock } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Navbar() {
