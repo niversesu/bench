@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Upload, Trash2, Palette, Image as ImageIcon } from "lucide-react";
@@ -190,14 +191,14 @@ export function ColorblindSimTool() {
     }
   };
 
-  const readFile = (file: File) => {
+  function readFile(file: File) {
     const reader = new FileReader();
     reader.onload = (e) => {
       setSourceImage(e.target?.result as string);
       setSimulatedImage(null);
     };
     reader.readAsDataURL(file);
-  };
+  }
 
   useFilePaste(readFile, "image/*");
 

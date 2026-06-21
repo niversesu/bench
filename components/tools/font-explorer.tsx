@@ -53,7 +53,7 @@ export function FontExplorerTool() {
     }
   };
 
-  const readFile = async (file: File) => {
+  async function readFile(file: File) {
     setError(null);
     setFontLoaded(false);
     setFileName(file.name);
@@ -102,7 +102,7 @@ export function FontExplorerTool() {
       setError("Failed to load font. The file may be corrupted or invalid.");
       console.error(err);
     }
-  };
+  }
 
   useFilePaste(readFile, ".ttf,.otf,.woff,.woff2");
 

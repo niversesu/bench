@@ -57,7 +57,7 @@ export function SocialCropperTool() {
   const currentRatio = platforms[selectedPlatform].ratios[selectedRatio];
   const aspectRatio = currentRatio.width / currentRatio.height;
 
-  const readFile = (file: File) => {
+  function readFile(file: File) {
     setFileName(file.name.replace(/\.[^.]+$/, ""));
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -72,7 +72,7 @@ export function SocialCropperTool() {
       img.src = dataUrl;
     };
     reader.readAsDataURL(file);
-  };
+  }
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -103,6 +103,7 @@ export function SocialCropperTool() {
   }, [imageSize, aspectRatio]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCropOffset({ x: 0, y: 0 });
     setCroppedImage(null);
   }, [selectedPlatform, selectedRatio]);
@@ -348,6 +349,7 @@ export function SocialCropperTool() {
                 onMouseDown={handleMouseDown}
                 onTouchStart={handleTouchStart}
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={sourceImage}
                   alt="Source"
@@ -388,6 +390,7 @@ export function SocialCropperTool() {
               <>
                 {/* Result preview — full-bleed */}
                 <div className="border-b border-border bg-muted/30 flex items-center justify-center p-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={croppedImage}
                     alt="Cropped"

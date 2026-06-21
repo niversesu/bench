@@ -52,7 +52,7 @@ export function WatermarkerTool() {
     if (file) readBaseFile(file);
   };
 
-  const readBaseFile = (file: File) => {
+  function readBaseFile(file: File) {
     setBaseFileName(file.name.replace(/\.[^.]+$/, ""));
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -66,7 +66,7 @@ export function WatermarkerTool() {
       img.src = dataUrl;
     };
     reader.readAsDataURL(file);
-  };
+  }
 
   const handleWatermarkDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -81,7 +81,7 @@ export function WatermarkerTool() {
     if (file) readWatermarkFile(file);
   };
 
-  const readWatermarkFile = (file: File) => {
+  function readWatermarkFile(file: File) {
     const reader = new FileReader();
     reader.onload = (e) => {
       const dataUrl = e.target?.result as string;
@@ -94,7 +94,7 @@ export function WatermarkerTool() {
       img.src = dataUrl;
     };
     reader.readAsDataURL(file);
-  };
+  }
 
   useFilePaste((file: File) => {
     if (!baseImage) readBaseFile(file);
@@ -114,9 +114,9 @@ export function WatermarkerTool() {
     if (baseImage && watermark) {
       generateWatermark();
     }
-  }, [baseImage, watermark, position, randomPos, opacity, blendMode, scale, padding]);
+  }, [baseImage, watermark, position, randomPos, opacity, blendMode, scale, padding, generateWatermark]);
 
-  const generateWatermark = () => {
+  const generateWatermark = useCallback(() => {
     if (!baseImage || !watermark) return;
 
     const baseImg = new Image();
@@ -177,7 +177,7 @@ export function WatermarkerTool() {
     watermarkImg.onload = onLoad;
     baseImg.src = baseImage;
     watermarkImg.src = watermark;
-  };
+  }, [baseImage, watermark, position, randomPos, opacity, blendMode, scale, padding]);
 
   const downloadResult = () => {
     if (!resultImage) return;
@@ -230,6 +230,7 @@ export function WatermarkerTool() {
               </div>
             ) : (
               <div className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={baseImage}
                   alt="Base"
@@ -287,6 +288,7 @@ export function WatermarkerTool() {
                     backgroundPosition: "0 0, 0 8px, 8px -8px, -8px 0px",
                   }}
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={watermark}
                     alt="Watermark"
@@ -437,6 +439,7 @@ export function WatermarkerTool() {
                 <label className="font-bold text-sm">Preview</label>
               </div>
               <div className="bg-muted/30">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={resultImage}
                   alt="Result"

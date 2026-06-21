@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Upload, Download, Trash2, RefreshCw } from "lucide-react";
@@ -31,7 +32,7 @@ export function ArtworkEnhancerTool() {
     }
   };
 
-  const readFile = (file: File) => {
+  function readFile(file: File) {
     setFileName(file.name.replace(/\.[^.]+$/, ""));
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -45,7 +46,7 @@ export function ArtworkEnhancerTool() {
       img.src = dataUrl;
     };
     reader.readAsDataURL(file);
-  };
+  }
 
   useFilePaste(readFile, "image/*");
 

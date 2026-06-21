@@ -55,7 +55,7 @@ export function BackgroundRemoverTool() {
     }
   };
 
-  const readFile = (file: File) => {
+  function readFile(file: File) {
     const reader = new FileReader();
     reader.onload = (e) => {
       const dataUrl = e.target?.result as string;
@@ -64,7 +64,7 @@ export function BackgroundRemoverTool() {
       setProcessing({ status: "idle" });
     };
     reader.readAsDataURL(file);
-  };
+  }
 
   useFilePaste(readFile, "image/*");
 
@@ -315,6 +315,7 @@ export function BackgroundRemoverTool() {
                 onChange={handleFileSelect}
                 className="hidden"
               />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={sourceImage}
                 alt="Source"
@@ -347,6 +348,7 @@ export function BackgroundRemoverTool() {
               <div className="border-r border-border">
                 <p className="text-sm text-muted-foreground text-center p-2 border-b border-border">Original</p>
                 <div className="relative overflow-hidden bg-muted aspect-square flex items-center justify-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={sourceImage}
                     alt="Original"
@@ -365,6 +367,7 @@ export function BackgroundRemoverTool() {
                     backgroundPosition: "0 0, 0 8px, 8px -8px, -8px 0px",
                   }}
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={resultImage}
                     alt="Background removed"

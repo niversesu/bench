@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useCallback, useEffect } from "react";
 import { Upload, Download, Copy, Check, Trash2 } from "lucide-react";
@@ -23,6 +24,7 @@ export function SvgOptimiserTool() {
   // scripts or reach cross-origin in the main document.
   useEffect(() => {
     if (!output) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreviewUrl("");
       return;
     }
@@ -36,11 +38,12 @@ export function SvgOptimiserTool() {
     const incoming = sessionStorage.getItem("svg-optimiser-input")
     if (incoming) {
       sessionStorage.removeItem("svg-optimiser-input")
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setInput(incoming)
       setFileName("traced.svg")
       optimizeSvg(incoming)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
@@ -49,7 +52,7 @@ export function SvgOptimiserTool() {
     if (file && file.type === "image/svg+xml") {
       readFile(file);
     }
-  }, []);
+  }, [readFile]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,20 +61,7 @@ export function SvgOptimiserTool() {
     }
   };
 
-  const readFile = (file: File) => {
-    setFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const content = e.target?.result as string;
-      setInput(content);
-      optimizeSvg(content);
-    };
-    reader.readAsText(file);
-  };
-
-  useFilePaste(readFile, ".svg,image/svg+xml");
-
-  const optimizeSvg = (svg: string) => {
+  function optimizeSvg(svg: string) {
     try {
       const result = optimize(svg, {
         multipass: true,
@@ -106,7 +96,20 @@ export function SvgOptimiserTool() {
       setOutput("");
       setStats(null);
     }
-  };
+  }
+
+  const readFile = useCallback((file: File) => {
+    setFileName(file.name);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      setInput(content);
+      optimizeSvg(content);
+    };
+    reader.readAsText(file);
+  }, []);
+
+  useFilePaste(readFile, ".svg,image/svg+xml");
 
   const handlePaste = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const content = e.target.value;

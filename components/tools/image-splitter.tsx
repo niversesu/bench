@@ -37,7 +37,7 @@ export function ImageSplitterTool() {
     }
   };
 
-  const readFile = (file: File) => {
+  function readFile(file: File) {
     setFileName(file.name.replace(/\.[^.]+$/, ""));
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -51,7 +51,7 @@ export function ImageSplitterTool() {
       img.src = dataUrl;
     };
     reader.readAsDataURL(file);
-  };
+  }
 
   useFilePaste(readFile, "image/*");
 
@@ -168,6 +168,7 @@ export function ImageSplitterTool() {
             {/* Preview with grid overlay */}
             <div className="border-b-2 border-border bg-muted/30 p-4 flex justify-center">
               <div className="relative inline-block">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={sourceImage}
                   alt="Source"
@@ -290,6 +291,7 @@ export function ImageSplitterTool() {
                 onClick={() => downloadTile(tile)}
                 className="bg-card hover:bg-muted transition-colors overflow-hidden group relative"
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={tile.dataUrl}
                   alt={`Tile ${tile.row + 1}-${tile.col + 1}`}
